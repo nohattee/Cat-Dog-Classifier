@@ -7,6 +7,11 @@
 5. imageio
 
 
+## Weight Pretrain
+
+You can download from my drive (https://bit.ly/34mN2Cx) and put it all to /server/checkpoints/ folder.
+
+
 ## Getting Started
 
 In the root directory of the project...
