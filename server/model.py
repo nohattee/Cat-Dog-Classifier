@@ -1,5 +1,9 @@
 import os
 import time
+import argparse
+
+import numpy as np
+import matplotlib.pyplot as plt
 
 import torch
 import torch.nn as nn
@@ -63,7 +67,39 @@ def evaluation(model, data):
     return (total_predict_true / data[1]) * 100
 
 if __name__ == "__main__":
-    dataloader = preprocess("/home/thebreaker/Downloads/cat-and-dog/val")
-    model = torch.load("server/checkpoints/model.pth")
-    acc = evaluation(model, dataloader)    
-    print("The accuracy for this model is ", acc)
+    parse = argparse.ArgumentParser()
+    parse.add_argument("--dataset", type=str, help="Dataset test path to evaluation")
+    parse.add_argument("--checkpoints", type=str, help="Path folder contains checkpoint")
+    args = parse.parse_args()
+    dataloader = preprocess(args.dataset)
+    total = []
+    models = ["model", "vgg16", "resnet18"]
+    for i in models:
+        model = torch.load(os.path.join(args.checkpoints, i + ".pth"))
+        acc = evaluation(model, dataloader)
+        total.append(round(acc, 2))
+
+    colors_list = ['#5cb85c','#5bc0de','#d9534f']
+    x = ['Our Model', 'VGG16', 'ResNet18']
+
+    x_pos = [i for i, _ in enumerate(x)]
+
+    fig, ax = plt.subplots()
+    ax.bar(x_pos, total, width = 0.3, color = colors_list,edgecolor=None)
+
+    plt.title("Compare baseline models")
+
+    plt.xticks(fontsize=14)
+    for spine in plt.gca().spines.values():
+        spine.set_visible(False)
+    plt.yticks([])
+
+    plt.xticks(x_pos, x)
+    # Add this loop to add the annotations
+
+    for p in ax.patches:
+        width, height = p.get_width(), p.get_height()
+        x, y = p.get_xy() 
+        ax.annotate('{}%'.format(height), (x, y + height + 1.5))
+
+    plt.show()

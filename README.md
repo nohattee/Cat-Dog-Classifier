@@ -16,7 +16,7 @@ After that you can install package below with pip or conda install
 
 1. Python (3.6)
 2. Flask
-3. Pytorch (https://pytorch.org/)
+3. Pytorch, torchvision (https://pytorch.org/)
 4. imageio
 
 
@@ -43,3 +43,12 @@ In the root directory of the project...
 ## Evaluation
 
 If you want to compare the accuracy between models, you can run file `model.py`
+```sh
+    usage: model.py [-h] [--dataset DATASET] [--checkpoints CHECKPOINTS]
+
+    optional arguments:
+    -h, --help            show this help message and exit
+    --dataset DATASET     Dataset test path to evaluation
+    --checkpoints CHECKPOINTS
+                            Path folder contains checkpoint
+```
